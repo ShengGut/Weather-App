@@ -35,7 +35,6 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-  color: red;
 }
 
 button {
@@ -68,4 +67,26 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.searchContainer {
+  width: 200px;
+}
+
+#searchBox {
+  width: 100%;
+  padding: 4px;
+  font-size: 20px;
+  border: none;
+  background-color: rgb(182, 182, 182);
+  padding-left: 40px;
+  border-radius: 10px;
+}
+
+.searchContainer input[type='text'] {
+  padding-left: 24px; /* Adjust the padding to leave space for the icon */
+  background-image: url('searchicon.svg'); /* Path to your search icon */
+  background-size: 32px; /* Adjust the size of the icon */
+  background-repeat: no-repeat; /* Ensure the icon is not repeated */
+  background-position: 0px center; /* Adjust the position of the icon */
 }
