@@ -118,6 +118,7 @@ button:focus-visible {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 55%;
+  grid-template-columns: 30%;
   grid-template-areas:
     'location location'
     'mintemp maxTemp';
@@ -126,6 +127,12 @@ button:focus-visible {
 .location {
   grid-area: location;
   margin: 0 auto;
+}
+
+#locationpin-icon {
+  position: relative;
+  top: 2px;
+  right: 3px;
 }
 
 .mainDate {
@@ -139,7 +146,7 @@ button:focus-visible {
 .mainCurrentTemp {
   grid-area: main2;
   place-self: center;
-  margin-right: 90px;
+  margin-right: 80px;
   margin-top: 25px;
 }
 
