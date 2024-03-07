@@ -32,11 +32,6 @@ body {
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -70,23 +65,130 @@ button:focus-visible {
 }
 
 .searchContainer {
-  width: 200px;
+  width: 230px;
 }
 
 #searchBox {
-  width: 100%;
   padding: 4px;
   font-size: 20px;
   border: none;
-  background-color: rgb(182, 182, 182);
-  padding-left: 40px;
+  padding-left: 35px;
+  background-color: rgb(100, 100, 100);
   border-radius: 10px;
 }
 
 .searchContainer input[type='text'] {
   padding-left: 24px; /* Adjust the padding to leave space for the icon */
-  background-image: url('searchicon.svg'); /* Path to your search icon */
+  background-image: url('./images/searchicon.svg'); /* Path to your search icon */
   background-size: 32px; /* Adjust the size of the icon */
   background-repeat: no-repeat; /* Ensure the icon is not repeated */
   background-position: 0px center; /* Adjust the position of the icon */
+}
+
+.weatherDataContainer {
+  margin: 25px;
+  border-right: 1px solid gray;
+  border-bottom: 2px solid gray;
+  width: 400px;
+  height: 200px;
+  background: linear-gradient(135deg, #ad36cb 20%, #333333 69%);
+  border-radius: 20px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr fit-content(1fr) 1fr;
+  grid-template-rows: 1fr 3fr 1fr;
+  justify-items: center;
+  grid-template-areas:
+    'header main2 main2'
+    'main main2 main2'
+    'footer footer2 footer3';
+}
+
+.minTemp,
+.maxTemp {
+  font-size: 14px;
+  grid-area: minTemp maxTemp;
+  margin: 0 auto;
+}
+.minTemp {
+  color: rgb(200, 200, 200);
+}
+
+.headerLocation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 55%;
+  grid-template-areas:
+    'location location'
+    'mintemp maxTemp';
+}
+
+.location {
+  grid-area: location;
+  margin: 0 auto;
+}
+
+.mainDate {
+  grid-area: main;
+  margin: 0 auto;
+  text-decoration: underline;
+  font-size: 20px;
+  place-self: center;
+}
+
+.mainCurrentTemp {
+  grid-area: main2;
+  place-self: center;
+  margin-right: 90px;
+  margin-top: 25px;
+}
+
+.currentTemp {
+  font-weight: 400;
+  font-size: 48px;
+  margin: 0 auto;
+}
+
+#thermometer-icon {
+  width: 16px;
+  height: auto;
+  position: relative;
+  top: 62px;
+  right: 24px;
+}
+
+#weather-icon {
+  position: relative;
+  bottom: 62px;
+  left: 108px;
+}
+
+.humidity {
+  grid-area: footer;
+  display: grid;
+  grid-template-rows: 60%;
+  grid-template-areas:
+    'humidity'
+    'data';
+  place-items: center;
+}
+
+.precipitation {
+  grid-area: footer2;
+  display: grid;
+  grid-template-rows: 60%;
+  grid-template-areas:
+    'precipitation'
+    'data';
+  place-items: center;
+}
+
+.wind {
+  grid-area: footer3;
+  display: grid;
+  grid-template-rows: 60%;
+  grid-template-areas:
+    'wind'
+    'data';
+  place-items: center;
 }

@@ -6,7 +6,7 @@
     <title>Weather App</title>
   </head>
   <body>
-    <form>
+    <form id="searchForm">
       <div class="searchContainer">
         <input
           type="text"
@@ -16,7 +16,31 @@
         />
       </div>
     </form>
-    <p>Weather Info here</p>
+    <div class="weatherDataContainer">
+      <div class="headerLocation">
+        <h2 class="location">London</h2>
+        <div class="minTemp">60°F</div>
+        <div class="maxTemp">90°F</div>
+      </div>
+      <div class="mainDate">Thu, Mar 7</div>
+      <div class="mainCurrentTemp">
+        <img src="./images/thermometer.svg" id="thermometer-icon" alt="" />
+        <h1 class="currentTemp">83°C</h1>
+        <img src="./images/sunny.svg" alt="" id="weather-icon" />
+      </div>
+      <div class="humidity">
+        Humidity
+        <div id="humidityData">50%</div>
+      </div>
+      <div class="precipitation">
+        Precipitation
+        <div id="precipitationData">0%</div>
+      </div>
+      <div class="wind">
+        Wind
+        <div id="windData">5 mph</div>
+      </div>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
