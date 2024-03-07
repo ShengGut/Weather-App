@@ -8,8 +8,23 @@ async function getWeatherData() {
 
   try {
     const response = await fetch(apiURL, { mode: 'cors' })
-    const data = await response.json()
-    console.log(data)
+    const weatherData = await response.json()
+    console.log(weatherData)
+    if (weatherData) {
+      console.log('Location:', weatherData.location.name)
+      console.log(
+        'Min Temperature (F):',
+        weatherData.forecast.forecastday[0].day.mintemp_f
+      )
+      console.log(
+        'Max Temperature (F):',
+        weatherData.forecast.forecastday[0].day.maxtemp_f
+      )
+      console.log(
+        'Average humidity (%):',
+        weatherData.forecast.forecastday[0].day.avghumidity
+      )
+    }
   } catch (error) {
     console.log('Error fetching weather data: ', error)
   }
