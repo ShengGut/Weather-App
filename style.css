@@ -137,7 +137,6 @@ button:focus-visible {
 
 .mainDate {
   grid-area: main;
-  margin: 0 auto;
   text-decoration: underline;
   font-size: 20px;
   place-self: center;

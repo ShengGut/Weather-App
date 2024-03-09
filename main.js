@@ -14,11 +14,29 @@ const humidityData = document.getElementById('humidityData')
 const precipitationData = document.getElementById('precipitationData')
 const windData = document.getElementById('windData')
 
+const searchForm = document.getElementById('searchForm')
+const searchBox = document.getElementById('searchBox')
+let location = 'London'
+searchForm.addEventListener('submit', async (event) => {
+  event.preventDefault()
+  const searchTerm = searchBox.value.trim()
+  console.log(searchTerm)
+  if (searchTerm) {
+    location = searchTerm
+    getWeatherData()
+  } else {
+    prompt(
+      'Something went wrong with your search, please double check your location'
+    )
+  }
+  searchBox.value = ''
+})
+
 // Write a function that fetches the Weather API, take a location, and return weather data for that location.
 // console log the information
 async function getWeatherData() {
   const apiKey = import.meta.env.VITE_API_KEY
-  const apiURL = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=London`
+  const apiURL = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}`
 
   try {
     const response = await fetch(apiURL, { mode: 'cors' })
