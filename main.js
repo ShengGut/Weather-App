@@ -7,22 +7,22 @@ async function getWeatherData() {
   const apiURL = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=London`
 
   try {
-    const response = await fetch(apiURL, { mode: 'cors' })
-    const weatherData = await response.json()
-    console.log(weatherData)
+    //  const response = await fetch(apiURL, { mode: 'cors' })
+    //   const weatherData = await response.json()
+    //   console.log(weatherData)
     if (weatherData) {
-      console.log('Location:', weatherData.location.name)
+      //     console.log('Location:', weatherData.location.name)
       console.log(
-        'Min Temperature (F):',
-        weatherData.forecast.forecastday[0].day.mintemp_f
+        'Min Temperature (F):'
+        //   weatherData.forecast.forecastday[0].day.mintemp_f
       )
       console.log(
-        'Max Temperature (F):',
-        weatherData.forecast.forecastday[0].day.maxtemp_f
+        'Max Temperature (F):'
+        //   weatherData.forecast.forecastday[0].day.maxtemp_f
       )
       console.log(
-        'Average humidity (%):',
-        weatherData.forecast.forecastday[0].day.avghumidity
+        'Average humidity (%):'
+        //   weatherData.forecast.forecastday[0].day.avghumidity
       )
     }
   } catch (error) {
