@@ -166,8 +166,8 @@ button:focus-visible {
 
 #weather-icon {
   position: relative;
-  bottom: 62px;
-  left: 108px;
+  bottom: 60px;
+  left: 138px;
 }
 
 .humidity {

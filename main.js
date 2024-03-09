@@ -1,4 +1,18 @@
 import './style.css'
+import { parse, format } from 'date-fns'
+
+const locationName = document.querySelector('.location')
+const imageTag =
+  '<img src="./images/locationpin.svg" id="locationpin-icon" alt="" />'
+const minTemp = document.querySelector('.minTemp')
+const maxTemp = document.querySelector('.maxTemp')
+const currentTemp = document.querySelector('.currentTemp')
+const mainDate = document.querySelector('.mainDate')
+
+const weatherIcon = document.getElementById('weather-icon')
+const humidityData = document.getElementById('humidityData')
+const precipitationData = document.getElementById('precipitationData')
+const windData = document.getElementById('windData')
 
 // Write a function that fetches the Weather API, take a location, and return weather data for that location.
 // console log the information
@@ -7,23 +21,23 @@ async function getWeatherData() {
   const apiURL = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=London`
 
   try {
-    //  const response = await fetch(apiURL, { mode: 'cors' })
-    //   const weatherData = await response.json()
-    //   console.log(weatherData)
+    const response = await fetch(apiURL, { mode: 'cors' })
+    const weatherData = await response.json()
+    console.log(weatherData)
+
+    const dateString = weatherData.location.localtime
+    const date = parse(dateString, 'yyyy-MM-dd HH:mm', new Date())
+    const formattedDate = format(date, 'EEE, MMM d')
+
     if (weatherData) {
-      //     console.log('Location:', weatherData.location.name)
-      console.log(
-        'Min Temperature (F):'
-        //   weatherData.forecast.forecastday[0].day.mintemp_f
-      )
-      console.log(
-        'Max Temperature (F):'
-        //   weatherData.forecast.forecastday[0].day.maxtemp_f
-      )
-      console.log(
-        'Average humidity (%):'
-        //   weatherData.forecast.forecastday[0].day.avghumidity
-      )
+      locationName.innerHTML = `${weatherData.location.name} ${imageTag}`
+      mainDate.textContent = formattedDate
+      minTemp.textContent = `${weatherData.forecast.forecastday[0].day.mintemp_f}°F`
+      maxTemp.textContent = `${weatherData.forecast.forecastday[0].day.maxtemp_f}°F`
+      currentTemp.textContent = `${weatherData.current.temp_f}°F`
+      humidityData.textContent = `${weatherData.forecast.forecastday[0].day.avghumidity}%`
+      precipitationData.textContent = `${weatherData.forecast.forecastday[0].day.totalprecip_in}"`
+      windData.textContent = `${weatherData.forecast.forecastday[0].day.maxwind_mph} mph`
     }
   } catch (error) {
     console.log('Error fetching weather data: ', error)
