@@ -32,9 +32,9 @@ async function getWeatherData() {
     if (weatherData) {
       locationName.innerHTML = `${weatherData.location.name} ${imageTag}`
       mainDate.textContent = formattedDate
-      minTemp.textContent = `${weatherData.forecast.forecastday[0].day.mintemp_f}°F`
-      maxTemp.textContent = `${weatherData.forecast.forecastday[0].day.maxtemp_f}°F`
-      currentTemp.textContent = `${weatherData.current.temp_f}°F`
+      minTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.mintemp_f)}°F`
+      maxTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.maxtemp_f)}°F`
+      currentTemp.textContent = `${Math.ceil(weatherData.current.temp_f)}°F`
       humidityData.textContent = `${weatherData.forecast.forecastday[0].day.avghumidity}%`
       precipitationData.textContent = `${weatherData.forecast.forecastday[0].day.totalprecip_in}"`
       windData.textContent = `${weatherData.forecast.forecastday[0].day.maxwind_mph} mph`
