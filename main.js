@@ -22,12 +22,24 @@ let location = 'London'
 searchForm.addEventListener('submit', async (event) => {
   event.preventDefault()
   const searchTerm = searchBox.value.trim()
+
+  if (searchTerm.length === 0) {
+    alert('Please enter a location.')
+    return
+  }
+
+  const validCharsRegex = /^[a-zA-Z\s,'-]+$/
+  if (!validCharsRegex.test(searchTerm)) {
+    alert('Please enter a valid location name without any special characters.')
+    return
+  }
+
   console.log(searchTerm)
   if (searchTerm) {
     location = searchTerm
     getWeatherData()
   } else {
-    prompt(
+    alert(
       'Something went wrong with your search, please double check your location'
     )
   }
@@ -42,6 +54,14 @@ async function getWeatherData() {
     loadingContainer.style.display = 'flex'
     const response = await fetch(apiURL, { mode: 'cors' })
     const weatherData = await response.json()
+
+    if (weatherData.error) {
+      // If the API returns an error, it means the location is invalid
+      alert(`Error: ${weatherData.error.message}`)
+      loadingContainer.style.display = 'none'
+      return
+    }
+
     console.log(weatherData)
 
     const dateString = weatherData.location.localtime
