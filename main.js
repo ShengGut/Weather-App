@@ -18,6 +18,7 @@ const loadingContainer = document.getElementById('loading')
 const searchForm = document.getElementById('searchForm')
 const searchBox = document.getElementById('searchBox')
 let location = 'London'
+
 // Event listener checks location entered and calls getWeatherData if valid.
 searchForm.addEventListener('submit', async (event) => {
   event.preventDefault()
