@@ -52,36 +52,60 @@ async function getWeatherData() {
   const apiURL = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}`
 
   try {
+    const cachedData = localStorage.getItem('weatherData')
+    const cachedTimestamp = localStorage.getItem('weatherTimestamp')
+    const currentTimestamp = Date.now()
+
+    // loads cached data only if it is cached less than 1 hour from it's creation
+    if (
+      cachedData &&
+      cachedTimestamp &&
+      currentTimestamp - cachedTimestamp < 3600000
+    ) {
+      const weatherData = JSON.parse(cachedData)
+      console.log(`Successfully loaded cached weather data!`, weatherData)
+      displayWeatherData(weatherData)
+      return
+    }
+
     loadingContainer.style.display = 'flex'
+
+    // if cached data fails to load, call API
     const response = await fetch(apiURL, { mode: 'cors' })
     const weatherData = await response.json()
-
+    console.log(`Call to API for weather data `, weatherData)
     if (weatherData.error) {
-      // If the API returns an error, it means the location is invalid
+      // if the API returns an error, it means the location is invalid
       alert(`Error: ${weatherData.error.message}`)
       loadingContainer.style.display = 'none'
       return
     }
 
-    console.log(weatherData)
-
-    const dateString = weatherData.location.localtime
-    const date = parse(dateString, 'yyyy-MM-dd HH:mm', new Date())
-    const formattedDate = format(date, 'EEE, MMM d')
-
-    if (weatherData) {
-      locationName.innerHTML = `${weatherData.location.name} ${imageTag}`
-      mainDate.textContent = formattedDate
-      minTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.mintemp_f)}°F`
-      maxTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.maxtemp_f)}°F`
-      currentTemp.textContent = `${Math.ceil(weatherData.current.temp_f)}°F`
-      humidityData.textContent = `${weatherData.forecast.forecastday[0].day.avghumidity}%`
-      precipitationData.textContent = `${weatherData.forecast.forecastday[0].day.totalprecip_in}"`
-      windData.textContent = `${weatherData.forecast.forecastday[0].day.maxwind_mph} mph`
-    }
+    // store the new data in localStorage with the current timestamp
+    localStorage.setItem('weatherData', JSON.stringify(weatherData))
+    localStorage.setItem('weatherTimestamp', currentTimestamp)
+    displayWeatherData(weatherData)
     loadingContainer.style.display = 'none'
   } catch (error) {
     console.log('Error fetching weather data: ', error)
   }
 }
+
+function displayWeatherData(weatherData) {
+  const dateString = weatherData.location.localtime
+  const date = parse(dateString, 'yyyy-MM-dd HH:mm', new Date())
+  const formattedDate = format(date, 'EEE, MMM d')
+
+  if (weatherData) {
+    locationName.innerHTML = `${weatherData.location.name} ${imageTag}`
+    mainDate.textContent = formattedDate
+    minTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.mintemp_f)}°F`
+    maxTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.maxtemp_f)}°F`
+    currentTemp.textContent = `${Math.ceil(weatherData.current.temp_f)}°F`
+    humidityData.textContent = `${weatherData.forecast.forecastday[0].day.avghumidity}%`
+    precipitationData.textContent = `${weatherData.forecast.forecastday[0].day.totalprecip_in}"`
+    windData.textContent = `${weatherData.forecast.forecastday[0].day.maxwind_mph} mph`
+  }
+}
+
 getWeatherData()
