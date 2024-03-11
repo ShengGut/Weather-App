@@ -1,28 +1,35 @@
 import './style.css'
 import { parse, format } from 'date-fns'
 
-const locationName = document.querySelector('.location')
-const imageTag =
-  '<img src="./images/locationpin.svg" id="locationpin-icon" alt="" />'
-const minTemp = document.querySelector('.minTemp')
-const maxTemp = document.querySelector('.maxTemp')
-const currentTemp = document.querySelector('.currentTemp')
-const mainDate = document.querySelector('.mainDate')
+const DOM_ELEMENTS = {
+  locationName: document.querySelector('.location'),
+  minTemp: document.querySelector('.minTemp'),
+  maxTemp: document.querySelector('.maxTemp'),
+  currentTemp: document.querySelector('.currentTemp'),
+  mainDate: document.querySelector('.mainDate'),
+  weatherIcon: document.getElementById('weather-icon'),
+  humidityData: document.getElementById('humidityData'),
+  precipitationData: document.getElementById('precipitationData'),
+  windData: document.getElementById('windData'),
+  loadingContainer: document.getElementById('loading'),
+  searchForm: document.getElementById('searchForm'),
+  searchBox: document.getElementById('searchBox'),
+}
 
-const weatherIcon = document.getElementById('weather-icon')
-const humidityData = document.getElementById('humidityData')
-const precipitationData = document.getElementById('precipitationData')
-const windData = document.getElementById('windData')
+const CONSTANTS = {
+  LOCATION_PIN_ICON:
+    '<img src="./images/locationpin.svg" id="locationpin-icon" alt="" />',
+  CACHE_EXPIRATION_TIME: 3600000, // 1 hour in milliseconds
+}
 
-const loadingContainer = document.getElementById('loading')
-const searchForm = document.getElementById('searchForm')
-const searchBox = document.getElementById('searchBox')
 let location = 'London'
 
-// Event listener checks location entered and calls getWeatherData if valid.
-searchForm.addEventListener('submit', async (event) => {
+// event listener checks location entered and calls getWeatherData if valid.
+DOM_ELEMENTS.searchForm.addEventListener('submit', handleSearchSubmit)
+
+async function handleSearchSubmit(event) {
   event.preventDefault()
-  const searchTerm = searchBox.value.trim()
+  const searchTerm = DOM_ELEMENTS.searchBox.value.trim()
 
   if (searchTerm.length === 0) {
     alert('Please enter a location.')
@@ -38,14 +45,14 @@ searchForm.addEventListener('submit', async (event) => {
   console.log(searchTerm)
   if (searchTerm) {
     location = searchTerm
-    getWeatherData()
+    await getWeatherData()
   } else {
     alert(
       'Something went wrong with your search, please double check your location'
     )
   }
-  searchBox.value = ''
-})
+  DOM_ELEMENTS.searchBox.value = ''
+}
 
 async function getWeatherData() {
   const apiKey = import.meta.env.VITE_API_KEY
@@ -60,7 +67,7 @@ async function getWeatherData() {
     if (
       cachedData &&
       cachedTimestamp &&
-      currentTimestamp - cachedTimestamp < 3600000
+      currentTimestamp - cachedTimestamp < CONSTANTS.CACHE_EXPIRATION_TIME
     ) {
       const weatherData = JSON.parse(cachedData)
       console.log(`Successfully loaded cached weather data!`, weatherData)
@@ -68,7 +75,7 @@ async function getWeatherData() {
       return
     }
 
-    loadingContainer.style.display = 'flex'
+    DOM_ELEMENTS.loadingContainer.style.display = 'flex'
 
     // if cached data fails to load, call API
     const response = await fetch(apiURL, { mode: 'cors' })
@@ -77,7 +84,7 @@ async function getWeatherData() {
     if (weatherData.error) {
       // if the API returns an error, it means the location is invalid
       alert(`Error: ${weatherData.error.message}`)
-      loadingContainer.style.display = 'none'
+      DOM_ELEMENTS.loadingContainer.style.display = 'none'
       return
     }
 
@@ -85,7 +92,7 @@ async function getWeatherData() {
     localStorage.setItem('weatherData', JSON.stringify(weatherData))
     localStorage.setItem('weatherTimestamp', currentTimestamp)
     displayWeatherData(weatherData)
-    loadingContainer.style.display = 'none'
+    DOM_ELEMENTS.loadingContainer.style.display = 'none'
   } catch (error) {
     console.log('Error fetching weather data: ', error)
   }
@@ -97,14 +104,14 @@ function displayWeatherData(weatherData) {
   const formattedDate = format(date, 'EEE, MMM d')
 
   if (weatherData) {
-    locationName.innerHTML = `${weatherData.location.name} ${imageTag}`
-    mainDate.textContent = formattedDate
-    minTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.mintemp_f)}°F`
-    maxTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.maxtemp_f)}°F`
-    currentTemp.textContent = `${Math.ceil(weatherData.current.temp_f)}°F`
-    humidityData.textContent = `${weatherData.forecast.forecastday[0].day.avghumidity}%`
-    precipitationData.textContent = `${weatherData.forecast.forecastday[0].day.totalprecip_in}"`
-    windData.textContent = `${weatherData.forecast.forecastday[0].day.maxwind_mph} mph`
+    DOM_ELEMENTS.locationName.innerHTML = `${weatherData.location.name} ${CONSTANTS.LOCATION_PIN_ICON}`
+    DOM_ELEMENTS.mainDate.textContent = formattedDate
+    DOM_ELEMENTS.minTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.mintemp_f)}°F`
+    DOM_ELEMENTS.maxTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.maxtemp_f)}°F`
+    DOM_ELEMENTS.currentTemp.textContent = `${Math.ceil(weatherData.current.temp_f)}°F`
+    DOM_ELEMENTS.humidityData.textContent = `${weatherData.forecast.forecastday[0].day.avghumidity}%`
+    DOM_ELEMENTS.precipitationData.textContent = `${weatherData.forecast.forecastday[0].day.totalprecip_in}"`
+    DOM_ELEMENTS.windData.textContent = `${weatherData.forecast.forecastday[0].day.maxwind_mph} mph`
   }
 }
 
