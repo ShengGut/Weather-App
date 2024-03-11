@@ -22,7 +22,7 @@ const CONSTANTS = {
   CACHE_EXPIRATION_TIME: 3600000, // 1 hour in milliseconds
 }
 
-let location = 'London'
+let location = localStorage.getItem('location') || 'New York'
 
 // event listener checks location entered and calls getWeatherData if valid.
 DOM_ELEMENTS.searchForm.addEventListener('submit', handleSearchSubmit)
@@ -62,11 +62,13 @@ async function getWeatherData() {
     const cachedData = localStorage.getItem('weatherData')
     const cachedTimestamp = localStorage.getItem('weatherTimestamp')
     const currentTimestamp = Date.now()
+    const cachedLocation = localStorage.getItem('location')
 
     // loads cached data only if it is cached less than 1 hour from it's creation
     if (
       cachedData &&
       cachedTimestamp &&
+      cachedLocation === location &&
       currentTimestamp - cachedTimestamp < CONSTANTS.CACHE_EXPIRATION_TIME
     ) {
       const weatherData = JSON.parse(cachedData)
@@ -91,6 +93,7 @@ async function getWeatherData() {
     // store the new data in localStorage with the current timestamp
     localStorage.setItem('weatherData', JSON.stringify(weatherData))
     localStorage.setItem('weatherTimestamp', currentTimestamp)
+    localStorage.setItem('location', location)
     displayWeatherData(weatherData)
     DOM_ELEMENTS.loadingContainer.style.display = 'none'
   } catch (error) {
