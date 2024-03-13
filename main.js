@@ -105,9 +105,10 @@ function displayWeatherData(weatherData) {
   const dateString = weatherData.location.localtime
   const date = parse(dateString, 'yyyy-MM-dd HH:mm', new Date())
   const formattedDate = format(date, 'EEE, MMM d')
-
+  const iconUrl = weatherData.current.condition.icon
   if (weatherData) {
     DOM_ELEMENTS.locationName.innerHTML = `${weatherData.location.name} ${CONSTANTS.LOCATION_PIN_ICON}`
+    DOM_ELEMENTS.weatherIcon.src = iconUrl
     DOM_ELEMENTS.mainDate.textContent = formattedDate
     DOM_ELEMENTS.minTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.mintemp_f)}°F`
     DOM_ELEMENTS.maxTemp.textContent = `${Math.ceil(weatherData.forecast.forecastday[0].day.maxtemp_f)}°F`
